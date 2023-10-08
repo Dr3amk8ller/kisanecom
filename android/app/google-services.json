@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "756690389880",
+    "project_id": "kisan-basket-5a534",
+    "storage_bucket": "kisan-basket-5a534.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756690389880:android:6578fdc2207fa5c550d68d",
+        "android_client_info": {
+          "package_name": "com.example.kisanecom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "756690389880-fsvh9s70kn3d2m9ptslbb0onaefpm97c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kisanecom",
+            "certificate_hash": "8d30ae9d6b9b4b40e2f82b4a03af04a57d148f5b"
+          }
+        },
+        {
+          "client_id": "756690389880-c26qbtm8viag8aqo4t10b3dvg1k8pu2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGHdHUKV48m2_0bqQMCNKvP0Z-sY2u3sQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756690389880-c26qbtm8viag8aqo4t10b3dvg1k8pu2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

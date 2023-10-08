@@ -2,67 +2,67 @@
   "products": [
     {
       "id": 1,
-      "name": "iPhone 12 Pro",
-      "desc": "Apple iPhone 12th generation",
-      "price": 999,
+      "name": "Benl Motor Starter",
+      "desc": "Comes with 3 month of warranty",
+      "price": 600,
       "color": "#33505a",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISJ6msIu4AU9_M9ZnJVQVFmfuhfyJjEtbUm3ZK11_8IV9TV25-1uM5wHjiFNwKy99w0mR5Hk&usqp=CAc"
+      "image": "http://bentecindia.com/wp-content/uploads/2017/05/Motor-Starter-4.jpg"
     },
     {
       "id": 2,
-      "name": "Pixel 5",
-      "desc": "Google Pixel phone 5th generation",
-      "price": 699,
+      "name": "Bentex Motor Chowkidar",
+      "desc": "Comes with 1 year of warranty",
+      "price": 2500,
       "color": "#00ac51",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd0JhwLvm_uLDLc-la7hK9WyVpe9naJFcebKfhcICiq2KtvXDePNAU_9QO06LPcQ0K0fLByc7m&usqp=CAc"
+      "image": "https://static.connect2india.com/c2icd/company_resources/3358558/images/products/product-bentex-starter.jpg"
     },
     {
       "id": 3,
-      "name": "M1 Macbook Air",
-      "desc": "Apple Macbook air with apple silicon",
-      "price": 1099,
+      "name": "SKY Let Control Panels",
+      "desc": "Sky let provie=des 1 year of manufacturing warranty",
+      "price": 2599,
       "color": "#e0bfae",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMOMstwtmLnjFb3NHiDJ_kcQnueNVH-rv_3ps96HZmXlFumKWaiBqq_L4Uoyx3iFiNTrXNEbyB&usqp=CAc"
+      "image": "https://www.kisanestore.com/image/cache/data/Skylet%20Jaydeep%20Controls/elcw-eco(400)-500x554.jpg"
     },
     {
       "id": 4,
-      "name": "Playstation 5",
-      "desc": "Sony Playstation 5th generation",
-      "price": 500,
+      "name": "Exhaust Pipe Cutout",
+      "desc": "Hookahr Product",
+      "price": 40,
       "color": "#544ee4",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMOMstwtmLnjFb3NHiDJ_kcQnueNVH-rv_3ps96HZmXlFumKWaiBqq_L4Uoyx3iFiNTrXNEbyB&usqp=CAc"
+      "image": "https://i5.walmartimages.com/asr/a847871e-7f05-4ee4-949d-9eda891b0c72_1.aad249a8a63d05299ac39d778017f6c2.jpeg"
     },
     {
       "id": 5,
-      "name": "Airpods Pro",
-      "desc": "Apple Aipods Pro 1st generation",
-      "price": 200,
+      "name": "Auto Single Phase Switch",
+      "desc": "Current Rating (In Amps): 30 Amp",
+      "price": 899,
       "color": "#e3e4e9",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQROEs084z65psoo06zYl5R0tUzywOVKVQZzmzqCj3PDP1vVJTWv3gGwGMFENSy4qV4n7sEQjE&usqp=CAc"
+      "image": "https://www.kisanestore.com/image/cache/data/Skylet%20Jaydeep%20Controls/SSA(400)-500x554.jpg"
     },
     {
       "id": 6,
-      "name": "iPad Pro",
-      "desc": "Apple iPad Pro 2020 edition",
-      "price": 799,
+      "name": "Shock Guard EL+ MCB-340",
+      "desc": "Saves life from lethal electric shock",
+      "price": 4999,
       "color": "#f73984",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNzUeRQ5uH7E3hpECib8qxdhfHv6SnUGT7mOsew_xiOoqRR7ZpdH-TQ4J6-HuIEfqHimYyPXWH&usqp=CAc"
+      "image": "https://www.kisanestore.com/image/cache/data/Skylet%20Jaydeep%20Controls/3%20phase%2032A%2063A(400)-500x554.jpg"
     },
     {
       "id": 7,
-      "name": "Galaxy S21 Ultra",
-      "desc": "Samsung Galaxy S21 Ultra 2021 edition",
-      "price": 1299,
+      "name": "Kisan Basket Stablizer",
+      "desc": "CutOut 220 volt",
+      "price": 8999,
       "color": "#1c1c1c",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT_PZcc0wicVYR992s5QCIDLYy8t-z-9kibTUdWZBN2sd86aaqdAJfhvxAwZNWV9wfdzDikpr1&usqp=CAc"
+      "image": "https://tiimg.tistatic.com/fp/1/003/707/voltage-stabilizer-527.jpg"
     },
     {
       "id": 8,
-      "name": "Galaxy S21",
-      "desc": "Samsung Galaxy S21 2021 edition",
-      "price": 899,
+      "name": "Machine oil",
+      "desc": "Keep lubrication inside a machine",
+      "price": 80,
       "color": "#7c95eb",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBNHd7FwarbxA1xdMFt24KazjcR4dWPH_t_T5dz4YNK1s7rJAQ8gOIuR_NRw6eeiQgFhbZ9sAN&usqp=CAc"
+      "image": "https://s3-eu-west-1.amazonaws.com/images.linnlive.com/4f0d9d35ed399a59a845fb81926e1bca/e69390a4-e1b0-4917-8962-b04165bdbb6b.jpg"
     }
   ]
 }
