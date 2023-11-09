@@ -83,7 +83,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
 
           'username': username,
         });
-
+        print(request.toString());
         // Add payment screenshot if available
         if (paymentScreenshot != null) {
           request.files.add(http.MultipartFile.fromBytes(
@@ -92,7 +92,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
             filename: 'payment_screenshot.jpg',
           ));
         }
-
+        print(request.toString());
         final response = await request.send();
 
         if (response.statusCode == 200) {
