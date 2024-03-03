@@ -5,7 +5,7 @@ import 'package:untitled/Pages/Cart.dart';
 import 'package:untitled/Pages/SignUpPage.dart';
 import 'package:untitled/Pages/hone_page.dart';
 import 'package:untitled/Pages/login_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Pages/routes.dart';
 import 'package:untitled/Pages/store.dart';
 import 'package:untitled/Pages/theme.dart';
