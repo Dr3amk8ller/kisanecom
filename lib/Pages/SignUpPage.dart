@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart'; // Commented out: Using mock auth
 import 'package:flutter/material.dart';
-import 'package:untitled/Pages/firebaseconst.dart';
 import 'package:untitled/Pages/routes.dart';
 import 'package:untitled/Pages/theme.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:http/http.dart' as http;
+import 'package:untitled/Pages/mock_auth.dart';
+// import 'package:http/http.dart' as http; // Commented out: Using mock data instead of API
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _SignUpState extends State<SignUp> {
     passwordController.dispose();
   }
 
-  UserCredential? userCredential;
+  // UserCredential? userCredential; // Commented out: Using mock auth
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +80,7 @@ class _SignUpState extends State<SignUp> {
                           hintText: "Enter Username",
                           labelText: "Username",
                         ),
+                        autofocus: false,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return "Username Cannot be Empty";
@@ -115,38 +116,54 @@ class _SignUpState extends State<SignUp> {
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? true) {
                     try {
-                      // Firebase user registration
-                      UserCredential firebaseUserCredential =
+                      // MOCK: Register using mock authentication
+                      final result =
+                          await MockAuth.createUserWithEmailAndPassword(
+                        email: emailController.text.toString(),
+                        password: passwordController.text.toString(),
+                      );
+
+                      if (result["success"] == true) {
+                        // Registration succeeded
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  "Registration successful! Please login.")),
+                        );
+                        Navigator.pushNamed(context, MyRoutes.LoginPage);
+                      } else {
+                        // Show error message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                                  result["error"] ?? "Registration failed")),
+                        );
+                      }
+
+                      // COMMENTED OUT: Firebase authentication
+                      /* UserCredential firebaseUserCredential =
                           await auth.createUserWithEmailAndPassword(
                         email: emailController.text.toString(),
                         password: passwordController.text.toString(),
                       );
 
-                      // Check if Firebase registration is successful
                       final user = firebaseUserCredential.user;
                       if (user != null) {
-                        // Firebase user registration succeeded
-
-                        // Make an API request to your Django backend for registration
                         bool djangoRegistrationSuccessful =
-                            await registerUserInDjango(
+                            await mockRegisterUserInDjango(
                           user.uid,
                           passwordController.text.toString(),
-                          // Pass other required user data to Django
                         );
 
                         if (djangoRegistrationSuccessful) {
-                          // Django registration succeeded
-                          // Navigate to the home page or perform any other action
                           Navigator.pushNamed(context, MyRoutes.LoginPage);
-                        } else {
-                          // Handle the case where Django registration failed
                         }
-                      } else {
-                        // Firebase user registration failed
-                      }
+                      } */
                     } catch (error) {
-                      // Handle errors from Firebase registration
+                      // Handle errors
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error: $error")),
+                      );
                       print(error);
                     }
                   }
@@ -160,28 +177,4 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-Future<bool> registerUserInDjango(
-  String firebaseUid,
-  String password,
-  /* Add other user data here */
-) async {
-  final response = await http.post(
-    Uri.parse(
-        'http://10.0.2.2:8000/api/register/'), // Replace with your Django API endpoint
-    body: {
-      'username': firebaseUid,
-      'password': password,
-
-      // Include other user data here as needed
-    },
-  );
-
-  if (response.statusCode == 201) {
-    // User creation in Django succeeded
-    return true;
-  } else {
-    // Handle the case where user creation in Django failed
-
-    return false;
-  }
-}
+// COMMENTED OUT: Django registration function (no longer needed with mock auth)

@@ -1,5 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart'; // Commented out: Using mock auth
 import 'package:flutter/material.dart';
 import 'package:untitled/Pages/Cart.dart';
 import 'package:untitled/Pages/SignUpPage.dart';
@@ -16,7 +16,8 @@ import 'Pages/Homepagecontent/PlaceOrder.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FilePicker.platform = FilePicker.platform;
-  await Firebase.initializeApp();
+  // COMMENTED OUT: Firebase initialization - using mock authentication instead
+  // await Firebase.initializeApp();
   runApp(VxState(store: MyStore(), child: MyApp()));
 }
 

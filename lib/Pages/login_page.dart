@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart'; // Commented out: Using mock auth
 import 'package:flutter/material.dart';
 import 'package:untitled/Pages/routes.dart';
-import 'package:untitled/Pages/theme.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:untitled/Pages/firebaseconst.dart';
-import 'package:http/http.dart' as http;
+import 'package:untitled/Pages/mock_auth.dart';
+// import 'package:http/http.dart' as http; // Commented out: Using mock data instead of API
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,13 +27,32 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   get isEmpty => null;
-  void login() {
+  
+  // MOCK: Login using mock authentication (with username)
+  Future<void> login() async {
+    final result = await MockAuth.signInWithUsernameAndPassword(
+      username: emailController.text.toString(),
+      password: passwordController.text.toString(),
+    );
+    
+    if (result["success"] == true) {
+      Navigator.pushNamed(context, MyRoutes.HomePage);
+    } else {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result["error"] ?? "Login failed")),
+      );
+    }
+  }
+  
+  // COMMENTED OUT: Firebase login
+  /* void login() {
     auth
         .signInWithEmailAndPassword(
             email: emailController.text.toString(),
             password: passwordController.text.toString())
         .then((value) => Navigator.pushNamed(context, MyRoutes.HomePage));
-  }
+  } */
 
   moveToHome(BuildContext context) async {
     {
@@ -53,9 +71,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).canvasColor,
-      child: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Theme.of(context).canvasColor,
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Image.asset(
@@ -128,37 +146,43 @@ class _LoginPageState extends State<LoginPage> {
                             await Future.delayed(const Duration(seconds: 1));
 
                             try {
-                              // Firebase user login
-                              UserCredential firebaseUserCredential =
+                              // MOCK: Login using mock authentication (with username)
+                              final result = await MockAuth.signInWithUsernameAndPassword(
+                                username: emailController.text.toString(),
+                                password: passwordController.text.toString(),
+                              );
+
+                              if (result["success"] == true) {
+                                // Login succeeded
+                                Navigator.pushNamed(context, MyRoutes.HomePage);
+                              } else {
+                                // Show error message
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(result["error"] ?? "Login failed")),
+                                );
+                              }
+
+                              // COMMENTED OUT: Firebase authentication
+                              /* UserCredential firebaseUserCredential =
                                   await auth.signInWithEmailAndPassword(
                                       email: emailController.text.toString(),
-                                      password:
-                                          passwordController.text.toString());
+                                      password: passwordController.text.toString());
 
-                              // Check if Firebase login is successful
                               final user = firebaseUserCredential.user;
                               if (user != null) {
-                                // Firebase login succeeded
-
-                                // Make an API request to your Django backend for login
                                 bool djangoLoginSuccessful =
-                                    await loginUserInDjango(user.uid,
-                                        passwordController.text.toString()
-                                        // Pass other required user data to Django
-                                        );
+                                    await mockLoginUserInDjango(user.uid,
+                                        passwordController.text.toString());
 
                                 if (djangoLoginSuccessful) {
-                                  // Django login succeeded
-                                  Navigator.pushNamed(
-                                      context, MyRoutes.HomePage);
-                                } else {
-                                  // Handle the case where Django login failed
+                                  Navigator.pushNamed(context, MyRoutes.HomePage);
                                 }
-                              } else {
-                                // Firebase login failed
-                              }
+                              } */
                             } catch (error) {
-                              // Handle errors from Firebase login
+                              // Handle errors
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Error: $error")),
+                              );
                               print(error);
                             }
 
@@ -215,26 +239,4 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-Future<bool> loginUserInDjango(
-  String firebaseUid,
-  String password,
-  /* Add other user data here */
-) async {
-  final response = await http.post(
-    Uri.parse(
-        'http://10.0.2.2:8000/login'), // Replace with your Django API endpoint
-    body: {
-      'username': firebaseUid,
-      'password': password
-      // Include other user data here as needed
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // User login in Django succeeded
-    return true;
-  } else {
-    // Handle the case where user login in Django failed
-    return false;
-  }
-}
+// COMMENTED OUT: Django login function (no longer needed with mock auth)

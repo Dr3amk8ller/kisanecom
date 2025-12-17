@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/Pages/store.dart';
 import 'package:untitled/Pages/theme.dart';
@@ -20,24 +19,33 @@ class AddToCart extends StatelessWidget {
   Widget build(BuildContext context) {
     VxState.watch(context, on: [AddMutation, RemoveMutation]);
     final CartModel _cart = (VxState.store as MyStore).cart;
-    bool isInCart = _cart.items.contains(catalog) ?? false;
-    return ElevatedButton(
-      onPressed: () {
-        if (!isInCart) {
-          AddMutation(catalog);
-        }
-      },
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            (Theme.of(context).brightness == Brightness.light
-                ? MyTheme.darkBluishColor
-                : MyTheme.lightBluishColor),
-          ),
-          shape: MaterialStateProperty.all(
-            StadiumBorder(),
-          )),
-      child:
-          isInCart ? Icon(Icons.done) : Icon(Icons.add_shopping_cart_outlined),
+    bool isInCart = _cart.items.contains(catalog);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 360;
+    
+    return SizedBox(
+      width: isSmallScreen ? 32 : 40,
+      height: isSmallScreen ? 32 : 40,
+      child: ElevatedButton(
+        onPressed: () {
+          if (!isInCart) {
+            AddMutation(catalog);
+          }
+        },
+        style: ButtonStyle(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            backgroundColor: WidgetStateProperty.all(
+              (Theme.of(context).brightness == Brightness.light
+                  ? MyTheme.darkBluishColor
+                  : MyTheme.lightBluishColor),
+            ),
+            shape: WidgetStateProperty.all(
+              const StadiumBorder(),
+            )),
+        child: isInCart 
+            ? Icon(Icons.done, size: isSmallScreen ? 16 : 20)
+            : Icon(Icons.add_shopping_cart_outlined, size: isSmallScreen ? 16 : 20),
+      ),
     );
   }
 }

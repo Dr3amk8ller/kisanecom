@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/Pages/dialog.dart';
-import 'package:untitled/Pages/routes.dart';
 import 'package:untitled/Pages/store.dart';
 import 'package:untitled/Pages/theme.dart';
 import 'package:velocity_x/velocity_x.dart';

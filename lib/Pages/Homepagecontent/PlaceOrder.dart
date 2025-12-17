@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http; // Commented out: Using mock data instead of API
 import 'package:untitled/Pages/firebaseconst.dart';
 import 'package:untitled/Pages/theme.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -55,19 +55,49 @@ class _PlaceOrderState extends State<PlaceOrder> {
     }
   }
 
+  // MOCK: Simulate placing order
   Future<void> _placeOrder() async {
     try {
       if (currentUser?.uid != null) {
-        // Create a multipart request
+        // Simulate network delay
+        await Future.delayed(const Duration(seconds: 2));
+        
+        // Mock successful order placement
+        print("MOCK: Order placed successfully");
+        print("Order Details:");
+        print("Name: ${nameController.text}");
+        print("Email: ${emailController.text}");
+        print("Phone: ${phoneController.text}");
+        print("State: ${stateController.text}");
+        print("City: ${cityController.text}");
+        print("Address: ${addressController.text}");
+        print("Total Value: ${widget.totalValue}");
+        print("Cart Items: ${widget.cartItems.length} items");
+        print("Payment Screenshot: ${paymentScreenshot != null ? 'Uploaded' : 'Not uploaded'}");
+        
+        final snackBar = SnackBar(content: Text('Order Placed Successfully'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        
+        // Navigate back after successful order
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      final snackBar = SnackBar(content: Text('Unknown Error: $error'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  // COMMENTED OUT: Actual API call to Django backend
+  /* Future<void> _placeOrder() async {
+    try {
+      if (currentUser?.uid != null) {
         final request = http.MultipartRequest(
           'POST',
           Uri.parse('http://10.0.2.2:8000/place/order'),
         );
-        // Assuming 'user' is the Firebase user object
 
         String username = currentUser?.uid ?? "";
 
-        // Add text fields (name, email, phone, state, city, address)
         request.fields.addAll({
           'name': nameController.text,
           'email': emailController.text,
@@ -76,15 +106,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
           'city': cityController.text,
           'address': addressController.text,
           'total_value': widget.totalValue.toString(),
-          // 'cart_items': cartItemsToString(), // Convert cartItems to a string
-          //  'cart_items': cartItemsToString(widget.cartItems),
-          'cart_items':
-              jsonEncode(widget.cartItems), // Convert the list to a JSON array
-
+          'cart_items': jsonEncode(widget.cartItems),
           'username': username,
         });
-        print(request.toString());
-        // Add payment screenshot if available
+
         if (paymentScreenshot != null) {
           request.files.add(http.MultipartFile.fromBytes(
             'payment_screenshot',
@@ -92,25 +117,22 @@ class _PlaceOrderState extends State<PlaceOrder> {
             filename: 'payment_screenshot.jpg',
           ));
         }
-        print(request.toString());
+
         final response = await request.send();
 
         if (response.statusCode == 200) {
-          // Handle a successful response here
-          final snackBar = SnackBar(content: Text('Order Placed Succesfully'));
+          final snackBar = SnackBar(content: Text('Order Placed Successfully'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         } else {
-          // Handle an unsuccessful response here
           final snackBar = SnackBar(content: Text('Order Placement Failed'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       }
     } catch (error) {
-      // Handle any exceptions that occur during the request
       final snackBar = SnackBar(content: Text('Unknown Error'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
+  } */
 
   // Define TextEditingController for each TextFormField
   final TextEditingController nameController = TextEditingController();
@@ -137,12 +159,12 @@ class _PlaceOrderState extends State<PlaceOrder> {
   @override
   Widget build(BuildContext context) {
     final num deliveryCharge = 40 * widget.cartItems.length;
-    final num totalCartValue = (widget.totalValue ?? 0) + deliveryCharge;
+    final num totalCartValue = widget.totalValue + deliveryCharge;
 
     return Scaffold(
-      backgroundColor: MyTheme.creamColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         title: Text(
           "Place Order",
@@ -163,32 +185,52 @@ class _PlaceOrderState extends State<PlaceOrder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Delivery Charge: \$${deliveryCharge.toStringAsFixed(2)}"),
-              Text("Total Cart Value: \$${totalCartValue.toStringAsFixed(2)}"),
+              Text(
+                "Delivery Charge: \$${deliveryCharge.toStringAsFixed(2)}",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "Total Cart Value: \$${totalCartValue.toStringAsFixed(2)}",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(height: 16),
               TextFormField(
                 controller: nameController,
                 decoration: InputDecoration(labelText: 'Name'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(labelText: 'Email'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               TextFormField(
                 controller: phoneController,
                 decoration: InputDecoration(labelText: 'Phone Number'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               TextFormField(
                 controller: stateController,
                 decoration: InputDecoration(labelText: 'State'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               TextFormField(
                 controller: cityController,
                 decoration: InputDecoration(labelText: 'City'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               TextFormField(
                 controller: addressController,
                 decoration: InputDecoration(labelText: 'Address'),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
               SizedBox(height: 16),
               // Button to pick payment screenshot
@@ -198,8 +240,10 @@ class _PlaceOrderState extends State<PlaceOrder> {
               ),
               SizedBox(height: 16),
               // Display selected payment screenshot if available
-              Image.asset(
-                  'Assests/images/WhatsApp Image 2023-09-27 at 18.53.21.jpeg'),
+              paymentScreenshot != null
+                  ? Image.file(paymentScreenshot!)
+                  : Image.asset(
+                      'Assests/images/WhatsApp Image 2023-09-27 at 18.53.21.jpeg'),
               SizedBox(height: 16),
               // Add 'Paid' button
               ElevatedButton(

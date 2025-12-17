@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/Pages/theme.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../routes.dart';
 
@@ -10,40 +8,58 @@ class CatalogHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 360;
+    final isMediumScreen = screenWidth >= 360 && screenWidth < 600;
+    
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 20.0), // Add horizontal padding
+      padding: EdgeInsets.symmetric(
+        horizontal: isSmallScreen ? 8.0 : (isMediumScreen ? 12.0 : 20.0),
+      ),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              "Kisan Basket"
-                  .text
-                  .bold
-                  .wider
-                  .xl4
-                  .color(Theme.of(context).brightness == Brightness.light
-                      ? MyTheme.tale
-                      : Colors.white70)
-                  .make(),
-              "Top trending Products"
-                  .text
-                  .xl
-                  .color(Theme.of(context).brightness == Brightness.light
-                      ? MyTheme.secondaryColorLight
-                      : MyTheme.secondaryColorDark)
-                  .overline
-                  .semiBold
-                  .make(),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Kisan Basket",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                    fontSize: isSmallScreen ? 20 : (isMediumScreen ? 24 : 28),
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? MyTheme.tale
+                        : Colors.white70,
+                  ),
+                ),
+                Text(
+                  "Top trending Products",
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 12 : (isMediumScreen ? 14 : 16),
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? MyTheme.secondaryColorLight
+                        : MyTheme.secondaryColorDark,
+                    decoration: TextDecoration.overline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const Spacer(), // Add a spacer to separate the Column and the button
-          FilledButton.icon(
-            onPressed: () => logout(context),
-            icon: Icon(Icons.logout_sharp),
-            label: Text("Logout"),
-          ),
+          SizedBox(width: isSmallScreen ? 4 : 8),
+          isSmallScreen
+              ? IconButton(
+                  onPressed: () => logout(context),
+                  icon: Icon(Icons.logout_sharp),
+                  tooltip: "Logout",
+                )
+              : FilledButton.icon(
+                  onPressed: () => logout(context),
+                  icon: Icon(Icons.logout_sharp, size: isMediumScreen ? 16 : 18),
+                  label: Text("Logout", style: TextStyle(fontSize: isMediumScreen ? 12 : 14)),
+                ),
         ],
       ),
     );

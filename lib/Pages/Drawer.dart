@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/Pages/theme.dart';
 
 class MyDrawer extends StatelessWidget {
   final _imageUrl = "https://shorturl.at/uDH37";
