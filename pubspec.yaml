@@ -44,6 +44,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.1
+  image: ^4.3.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -92,3 +95,24 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "Assests/images/farmersmarket-1.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "Assests/images/farmersmarket-1.png"
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "Assests/images/294949024_460187556114448_3878388641743438730_n.jpg"
+  color_dark: "#000000"
+  image_dark: "Assests/images/294949024_460187556114448_3878388641743438730_n.jpg"
+  android: true
+  ios: false
+  android_12:
+    image: "Assests/images/294949024_460187556114448_3878388641743438730_n.jpg"
+    color: "#ffffff"
+    image_dark: "Assests/images/294949024_460187556114448_3878388641743438730_n.jpg"
+    color_dark: "#000000"
