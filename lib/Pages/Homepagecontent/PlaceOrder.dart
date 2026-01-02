@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 // import 'package:http/http.dart' as http; // Commented out: Using mock data instead of API
 import 'package:untitled/Pages/firebaseconst.dart';
-import 'package:untitled/Pages/theme.dart';
+import 'package:untitled/Pages/CartModel.dart';
+import 'package:untitled/Pages/store.dart';
+import 'package:untitled/Pages/models/Order.dart';
+import 'package:untitled/Pages/services/OrderHistoryService.dart';
+import 'package:untitled/Pages/routes.dart';
+import 'package:uuid/uuid.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../dialog.dart';
 
@@ -62,8 +67,53 @@ class _PlaceOrderState extends State<PlaceOrder> {
         // Simulate network delay
         await Future.delayed(const Duration(seconds: 2));
         
+        // Get cart to create order items with quantities
+        final CartModel cart = (VxState.store as MyStore).cart;
+        
+        // Create order items from cart
+        final List<OrderItem> orderItems = cart.items.map((item) {
+          return OrderItem(
+            itemId: item.id,
+            itemName: item.name,
+            price: item.price,
+            quantity: cart.getQuantity(item),
+          );
+        }).toList();
+        
+        // Calculate delivery charge and final total
+        final num deliveryCharge = 40 * cart.totalItemCount;
+        final num finalTotal = widget.totalValue + deliveryCharge;
+        
+        // Create order
+        final order = Order(
+          orderId: const Uuid().v4(), // Generate unique order ID
+          userId: currentUser!.uid,
+          name: nameController.text,
+          email: emailController.text,
+          phone: phoneController.text,
+          state: stateController.text,
+          city: cityController.text,
+          address: addressController.text,
+          totalValue: widget.totalValue,
+          deliveryCharge: deliveryCharge,
+          finalTotal: finalTotal,
+          items: orderItems,
+          orderDate: DateTime.now(),
+          paymentScreenshotPath: paymentScreenshot?.path,
+        );
+        
+        // Save order to local storage
+        final saved = await OrderHistoryService.saveOrder(order);
+        
+        if (saved) {
+          print("MOCK: Order saved to local storage");
+        } else {
+          print("MOCK: Failed to save order to local storage");
+        }
+        
         // Mock successful order placement
         print("MOCK: Order placed successfully");
+        print("Order ID: ${order.orderId}");
         print("Order Details:");
         print("Name: ${nameController.text}");
         print("Email: ${emailController.text}");
@@ -72,14 +122,22 @@ class _PlaceOrderState extends State<PlaceOrder> {
         print("City: ${cityController.text}");
         print("Address: ${addressController.text}");
         print("Total Value: ${widget.totalValue}");
-        print("Cart Items: ${widget.cartItems.length} items");
+        print("Final Total: $finalTotal");
+        print("Cart Items: ${orderItems.length} unique items, ${cart.totalItemCount} total items");
         print("Payment Screenshot: ${paymentScreenshot != null ? 'Uploaded' : 'Not uploaded'}");
         
         final snackBar = SnackBar(content: Text('Order Placed Successfully'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         
-        // Navigate back after successful order
-        Navigator.pop(context);
+        // Clear cart after successful order
+        ClearCartMutation();
+        
+        // Navigate to home and clear all routes (no back button)
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          MyRoutes.HomePage,
+          (route) => false, // Remove all previous routes
+        );
       }
     } catch (error) {
       final snackBar = SnackBar(content: Text('Unknown Error: $error'));
@@ -158,7 +216,8 @@ class _PlaceOrderState extends State<PlaceOrder> {
 
   @override
   Widget build(BuildContext context) {
-    final num deliveryCharge = 40 * widget.cartItems.length;
+    final CartModel cart = (VxState.store as MyStore).cart;
+    final num deliveryCharge = 40 * cart.totalItemCount;
     final num totalCartValue = widget.totalValue + deliveryCharge;
 
     return Scaffold(

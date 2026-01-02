@@ -9,6 +9,7 @@ import 'package:untitled/Pages/theme.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'Homepagecontent/CatalogHeader.dart';
 import 'Homepagecontent/CatalogList.dart';
+import 'Drawer.dart';
 import 'dialog.dart';
 // import 'package:http/http.dart' as http; // Commented out: Using mock data instead of API
 
@@ -85,7 +86,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final CartModel _cart = (VxState.store as MyStore).cart;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 360;
+    
     return Scaffold(
+      drawer: const MyDrawer(),
       floatingActionButton: VxBuilder(
         builder: (BuildContext context, store, VxStatus? status) {
           return FloatingActionButton(
@@ -98,13 +103,13 @@ class _HomePageState extends State<HomePage> {
             foregroundColor: Colors.white,
             child: const Icon(Icons.shopping_cart),
           ).badge(
-              count: _cart.items.length,
+              count: _cart.totalItemCount,
               color: Vx.red600,
               size: 25,
               textStyle: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold));
         },
-        mutations: const {AddMutation, RemoveMutation},
+        mutations: const {AddMutation, RemoveMutation, IncrementMutation, DecrementMutation, ClearCartMutation},
       ),
       backgroundColor: context.canvasColor,
       body: SafeArea(
@@ -112,7 +117,10 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+              padding: EdgeInsets.only(
+                top: isSmallScreen ? 4.0 : 8.0,
+                bottom: 4.0,
+              ),
               child: const CatalogHeader(),
             ),
             Expanded(

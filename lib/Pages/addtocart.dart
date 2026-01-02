@@ -17,9 +17,10 @@ class AddToCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    VxState.watch(context, on: [AddMutation, RemoveMutation]);
+    VxState.watch(context, on: [AddMutation, IncrementMutation]);
     final CartModel _cart = (VxState.store as MyStore).cart;
-    bool isInCart = _cart.items.contains(catalog);
+    final quantity = _cart.getQuantity(catalog);
+    final isInCart = quantity > 0;
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 360;
     
@@ -28,9 +29,8 @@ class AddToCart extends StatelessWidget {
       height: isSmallScreen ? 32 : 40,
       child: ElevatedButton(
         onPressed: () {
-          if (!isInCart) {
-            AddMutation(catalog);
-          }
+          // Always allow adding - will increment if already in cart
+          AddMutation(catalog);
         },
         style: ButtonStyle(
             padding: WidgetStateProperty.all(EdgeInsets.zero),
@@ -43,7 +43,37 @@ class AddToCart extends StatelessWidget {
               const StadiumBorder(),
             )),
         child: isInCart 
-            ? Icon(Icons.done, size: isSmallScreen ? 16 : 20)
+            ? Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(Icons.done, size: isSmallScreen ? 16 : 20),
+                  if (quantity > 1)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: isSmallScreen ? 10 : 12,
+                          minHeight: isSmallScreen ? 10 : 12,
+                        ),
+                        child: Text(
+                          "$quantity",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isSmallScreen ? 8 : 9,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
+              )
             : Icon(Icons.add_shopping_cart_outlined, size: isSmallScreen ? 16 : 20),
       ),
     );

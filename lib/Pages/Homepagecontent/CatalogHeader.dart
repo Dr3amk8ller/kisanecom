@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/Pages/theme.dart';
+import 'package:untitled/Pages/mock_auth.dart';
 
 import '../routes.dart';
 
@@ -49,11 +50,31 @@ class CatalogHeader extends StatelessWidget {
             ),
           ),
           SizedBox(width: isSmallScreen ? 4 : 8),
+          // Menu button
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: "Menu",
+                color: Theme.of(context).brightness == Brightness.light
+                    ? MyTheme.tale
+                    : Colors.white,
+              );
+            },
+          ),
+          SizedBox(width: isSmallScreen ? 4 : 8),
+          // Logout button
           isSmallScreen
               ? IconButton(
                   onPressed: () => logout(context),
                   icon: Icon(Icons.logout_sharp),
                   tooltip: "Logout",
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? MyTheme.tale
+                      : Colors.white,
                 )
               : FilledButton.icon(
                   onPressed: () => logout(context),
@@ -65,7 +86,12 @@ class CatalogHeader extends StatelessWidget {
     );
   }
 
-  void logout(BuildContext context) {
-    Navigator.pushNamed(context, MyRoutes.LoginPage);
+  void logout(BuildContext context) async {
+    await MockAuth.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      MyRoutes.LoginPage,
+      (route) => false,
+    );
   }
 }

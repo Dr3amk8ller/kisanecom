@@ -9,8 +9,8 @@ class CartModel {
 
   CartModel(this._catalog);
 
-  // Collection of IDs - store Ids of each item
-  final List<int> _itemIds = [];
+  // Map of item ID to quantity - store quantities of each item
+  final Map<int, int> _itemQuantities = {};
 
   // Get Catalog
   CatalogModel get catalog => _catalog;
@@ -19,12 +19,24 @@ class CartModel {
     _catalog = newCatalog;
   }
 
-  // Get items in the cart
-  List<Item> get items => _itemIds.map((id) => _catalog.getById(id)).toList();
+  // Get items in the cart (unique items)
+  List<Item> get items => _itemQuantities.keys.map((id) => _catalog.getById(id)).toList();
 
-  // Get total price
-  num get totalPrice =>
-      items.fold(0, (total, current) => total + current.price);
+  // Get quantity of a specific item
+  int getQuantity(Item item) => _itemQuantities[item.id] ?? 0;
+
+  // Get total number of items (sum of all quantities)
+  int get totalItemCount => _itemQuantities.values.fold(0, (sum, qty) => sum + qty);
+
+  // Get total price (considering quantities)
+  num get totalPrice => _itemQuantities.entries.fold(
+      0,
+      (total, entry) => total + (_catalog.getById(entry.key).price * entry.value));
+
+  // Clear all items from cart
+  void clear() {
+    _itemQuantities.clear();
+  }
 }
 
 class AddMutation extends VxMutation<MyStore> {
@@ -34,7 +46,10 @@ class AddMutation extends VxMutation<MyStore> {
 
   @override
   perform() {
-    store?.cart._itemIds.add(item.id);
+    final cart = store?.cart;
+    if (cart != null) {
+      cart._itemQuantities[item.id] = (cart._itemQuantities[item.id] ?? 0) + 1;
+    }
   }
 }
 
@@ -45,6 +60,50 @@ class RemoveMutation extends VxMutation<MyStore> {
 
   @override
   perform() {
-    store?.cart._itemIds.remove(item.id);
+    final cart = store?.cart;
+    if (cart != null) {
+      cart._itemQuantities.remove(item.id);
+    }
+  }
+}
+
+class IncrementMutation extends VxMutation<MyStore> {
+  final Item item;
+
+  IncrementMutation(this.item);
+
+  @override
+  perform() {
+    final cart = store?.cart;
+    if (cart != null) {
+      cart._itemQuantities[item.id] = (cart._itemQuantities[item.id] ?? 0) + 1;
+    }
+  }
+}
+
+class DecrementMutation extends VxMutation<MyStore> {
+  final Item item;
+
+  DecrementMutation(this.item);
+
+  @override
+  perform() {
+    final cart = store?.cart;
+    if (cart != null) {
+      final currentQty = cart._itemQuantities[item.id] ?? 0;
+      if (currentQty > 1) {
+        cart._itemQuantities[item.id] = currentQty - 1;
+      } else {
+        // Remove item if quantity becomes 0
+        cart._itemQuantities.remove(item.id);
+      }
+    }
+  }
+}
+
+class ClearCartMutation extends VxMutation<MyStore> {
+  @override
+  perform() {
+    store?.cart.clear();
   }
 }
